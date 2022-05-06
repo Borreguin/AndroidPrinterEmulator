@@ -16,11 +16,13 @@ export const FS = new SpecialSymbol(String.fromCharCode(0x1c), '', 'FS');
 export const GS = new SpecialSymbol(String.fromCharCode(0x1d), '', 'GS');
 
 export const CAN = new SpecialSymbol(String.fromCharCode(0x18), '', 'CAN');
-export const FF = new SpecialSymbol(
-  String.fromCharCode(0x0c),
-  '',
-  'Print and feed paper 1 lines',
-);
+export const FF = new SpecialSymbol(String.fromCharCode(0x0C), '', 'Print and feed paper 1 lines');
+export const SO = new SpecialSymbol(String.fromCharCode(0x0E), '', 'Print and paper feed to the right black bar');
+export const LF = new SpecialSymbol(String.fromCharCode(0x0A), '', 'Line feed',);
+export const CR = new SpecialSymbol(String.fromCharCode(0x0D), '', 'Print and carriage return');
+export const HT = new SpecialSymbol(String.fromCharCode(0x09), '', 'Horizontal tab');
+
+
 export const SP = new SpecialSymbol(String.fromCharCode(0x20), ' ', 'Space');
 
 export const AT = new SpecialSymbol(String.fromCharCode(0x40), '', '@');
