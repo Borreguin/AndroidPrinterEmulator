@@ -24,14 +24,25 @@ export const CR = new SpecialSymbol(0x0D, '', 'Print and carriage return');
 export const HT = new SpecialSymbol(0x09, '', 'Horizontal tab');
 export const x99 = new SpecialSymbol(0x99, '', 'x99');
 export const x30 = new SpecialSymbol(0x99, '', 'x30');
-export const x31 = new SpecialSymbol(0x99, '', 'x31');
-export const x32 = new SpecialSymbol(0x99, '', 'x32');
+export const x31 = new SpecialSymbol(0x31, '', 'x31');
+export const x32 = new SpecialSymbol(0x32, '', 'x32');
+export const x33 = new SpecialSymbol(0x33, '', 'x33');
 export const AMP = new SpecialSymbol(0x26, '', '& ampersand');
 export const DOT = new SpecialSymbol(0x2E, '', '. dot');
 export const US = new SpecialSymbol(0x1F, '', 'US');
 export const Jx4A = new SpecialSymbol(0x4A, '', 'J');
 export const dx64 = new SpecialSymbol(0x64, '', 'd');
 export const DOL = new SpecialSymbol(0x24, '', '$');
+export const Dx44 = new SpecialSymbol(0x44, '', 'D');
+export const NULL = new SpecialSymbol(0xFF, '', 'FF');
+export const ax61 = new SpecialSymbol(0xFF, '', 'a');
+export const Lx4C = new SpecialSymbol(0x4C, '', 'L');
+export const hx68 = new SpecialSymbol(0x68, '', 'h');
+export const wx77 = new SpecialSymbol(0x77, '', 'w');
+export const Hx48 = new SpecialSymbol(0x48, '', 'H');
+export const fx66 = new SpecialSymbol(0x66, '', 'f');
+export const kx6B = new SpecialSymbol(0x6B, '', 'k');
+export const Zx5A = new SpecialSymbol(0x5A, '', 'Z');
 
 export const SP = new SpecialSymbol(0x20, ' ', 'Space');
 
