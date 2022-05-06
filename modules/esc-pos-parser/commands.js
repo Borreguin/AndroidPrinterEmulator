@@ -7,6 +7,5 @@ export class EscPosCommands {
     this.replaceWith = replaceWith;
     this.description = description;
   }
-
 }
 

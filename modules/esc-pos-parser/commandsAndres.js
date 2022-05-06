@@ -1,4 +1,4 @@
-import rc from './regexContants';
+import rc from './regexConstants';
 const s = require('./symbols');
 
 const { EscPosCommands } = require('./commands');
