@@ -37,7 +37,7 @@ export const GS_Z_n = new EscPosCommands(s.GS.symbol + Hex2Str( 0x5A) + rc.nPosi
 export const ESC_Z_m_n_k_sL_sH = new EscPosCommands(s.ESC.symbol + Hex2Str( 0x5A) + rc.nPositions5, '', 'Print the 2D bar code');
 export const barCodePrintingCommand = [GS_h_n, GS_w_n, GS_H_n, GS_f_n, GS_k_m, GS_Z_n, ESC_Z_m_n_k_sL_sH];
 
-// Print Chinese characters command
+// Print specials characters command
 export const FS_AMP = new EscPosCommands(s.FS.symbol + s.AMP.symbol, '', 'Specify Chinese character mode');
 export const FS_DOT = new EscPosCommands(s.FS.symbol + s.DOT.symbol, '', 'Cancel Chinese character mode');
 export const FS_U_nL_nH = new EscPosCommands(s.FS.symbol + Hex2Str( 0x55) + rc.nPositions2, '', 'Print Unicode code character');

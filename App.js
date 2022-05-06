@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import type {Node} from 'react';
 import TcpSocket from 'react-native-tcp-socket';
 import {
@@ -29,6 +29,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import {EscCharacters} from './modules/esc-pos-parser/symbols';
 import TextRegexButton from './component/test-regex-button';
+import {getTypeOf} from './modules/esc-pos-parser/util';
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -58,6 +59,7 @@ const Section = ({children, title}): Node => {
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [buffer, setBuffer] = useState('');
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -79,7 +81,9 @@ const App: () => Node = () => {
 
   const decode = data => {
     let resp = '';
-    for (var d of data) {
+    for (const d of data) {
+      const aux = getTypeOf(d);
+      console.log("type", aux, d);
       const letter = String.fromCharCode(d);
       if (!EscCharacters.includes(letter)) {
         resp += letter;
