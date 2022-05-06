@@ -21,11 +21,17 @@ export const SO = new SpecialSymbol(String.fromCharCode(0x0E), '', 'Print and pa
 export const LF = new SpecialSymbol(String.fromCharCode(0x0A), '', 'Line feed',);
 export const CR = new SpecialSymbol(String.fromCharCode(0x0D), '', 'Print and carriage return');
 export const HT = new SpecialSymbol(String.fromCharCode(0x09), '', 'Horizontal tab');
-
+export const x99 = new SpecialSymbol(String.fromCharCode(0x99), '', 'x99');
+export const x30 = new SpecialSymbol(String.fromCharCode(0x99), '', 'x30');
+export const x31 = new SpecialSymbol(String.fromCharCode(0x99), '', 'x31');
+export const x32 = new SpecialSymbol(String.fromCharCode(0x99), '', 'x32');
+export const AMP = new SpecialSymbol(String.fromCharCode(0x26), '', '& ampersand');
+export const DOT = new SpecialSymbol(String.fromCharCode(0x2E), '', '. dot');
+export const US = new SpecialSymbol(String.fromCharCode(0x1F), '', 'US')
 
 export const SP = new SpecialSymbol(String.fromCharCode(0x20), ' ', 'Space');
 
-export const AT = new SpecialSymbol(String.fromCharCode(0x40), '', '@');
+export const AT = new SpecialSymbol(String.fromCharCode(0x40), '', '@ at');
 
 export const C_EOT = new SpecialSymbol(String.fromCharCode(0x04), '', 'C_EOT');
 export const C_END = new SpecialSymbol(String.fromCharCode(0x05), '', 'C_END');
