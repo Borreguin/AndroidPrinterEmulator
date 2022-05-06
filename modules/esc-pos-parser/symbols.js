@@ -3,7 +3,8 @@ class SpecialSymbol {
   description;
   replaceWith;
   constructor(symbolHex, replaceWith, description) {
-    this.symbol = String.fromCharCode(symbolHex);
+    const convertToString = JSON.stringify(String.fromCharCode(symbolHex));
+    this.symbol = convertToString.substring(1, convertToString.length-1);;
     this.replaceWith = replaceWith;
     this.description = description;
   }
