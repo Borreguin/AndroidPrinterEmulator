@@ -27,7 +27,10 @@ export const x31 = new SpecialSymbol(0x99, '', 'x31');
 export const x32 = new SpecialSymbol(0x99, '', 'x32');
 export const AMP = new SpecialSymbol(0x26, '', '& ampersand');
 export const DOT = new SpecialSymbol(0x2E, '', '. dot');
-export const US = new SpecialSymbol(0x1F, '', 'US')
+export const US = new SpecialSymbol(0x1F, '', 'US');
+export const Jx4A = new SpecialSymbol(0x4A, '', 'J');
+export const dx64 = new SpecialSymbol(0x64, '', 'd');
+export const DOL = new SpecialSymbol(0x24, '', '$');
 
 export const SP = new SpecialSymbol(0x20, ' ', 'Space');
 
