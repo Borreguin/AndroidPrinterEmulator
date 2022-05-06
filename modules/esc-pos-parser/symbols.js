@@ -47,4 +47,4 @@ export const EscCharacters = [
   C_DC4.symbol,
 ];
 
-// List of commands:
+
