@@ -27,7 +27,10 @@ export const x31 = new SpecialSymbol(String.fromCharCode(0x99), '', 'x31');
 export const x32 = new SpecialSymbol(String.fromCharCode(0x99), '', 'x32');
 export const AMP = new SpecialSymbol(String.fromCharCode(0x26), '', '& ampersand');
 export const DOT = new SpecialSymbol(String.fromCharCode(0x2E), '', '. dot');
-export const US = new SpecialSymbol(String.fromCharCode(0x1F), '', 'US')
+export const US = new SpecialSymbol(String.fromCharCode(0x1F), '', 'US');
+export const Jx4A = new SpecialSymbol(String.fromCharCode(0x4A), '', 'J');
+export const dx64 = new SpecialSymbol(String.fromCharCode(0x64), '', 'd');
+export const DOL = new SpecialSymbol(String.fromCharCode(0x24), '', '$');
 
 export const SP = new SpecialSymbol(String.fromCharCode(0x20), ' ', 'Space');
 
