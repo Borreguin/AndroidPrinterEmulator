@@ -1,9 +1,9 @@
-class EscPosCommands {
+export class EscPosCommands {
   command;
   description;
   replaceWith;
-  constructor(symbol, replaceWith, description) {
-    this.symbol = symbol;
+  constructor(command, replaceWith, description) {
+    this.command = command;
     this.replaceWith = replaceWith;
     this.description = description;
   }
