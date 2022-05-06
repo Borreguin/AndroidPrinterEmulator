@@ -40,6 +40,8 @@ export const C_EOT = new SpecialSymbol(0x04, '', 'C_EOT');
 export const C_END = new SpecialSymbol(0x05, '', 'C_END');
 export const C_DC4 = new SpecialSymbol(0x14, '', 'C_DC4');
 
+export const EXCLAMATION_MARK_CLOSE = new SpecialSymbol(0x21, '', '!');
+
 export const EscCharacters = [
   STX.symbol,
   DLE.symbol,
