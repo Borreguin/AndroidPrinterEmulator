@@ -2,17 +2,17 @@ import {Hex2Str} from './util';
 
 const s = require('./symbols');
 const {EscPosCommands} = require('./commands');
-const rc = require('./regexConstants')
+import rc from './regexConstants';
 
 // Basic control command
 export const ESC_AT = new EscPosCommands(s.ESC.symbol + s.AT.symbol, '', 'Initialize printer');
-export const FF = new EscPosCommands(s.FF.symbol, '', 'Print and feed paper 1 lines');
-export const SO = new EscPosCommands(s.SO.symbol, '', 'Print and paper feed to the right black bar');
-export const LF = new EscPosCommands(s.LF.symbol, '', 'Line feed');
-export const CR = new EscPosCommands(s.CR.symbol, '', 'Print and carriage return');
+export const FF = new EscPosCommands(s.FF.symbol, '\n', 'Print and feed paper 1 lines');
+export const SO = new EscPosCommands(s.SO.symbol, '\n', 'Print and paper feed to the right black bar');
+export const LF = new EscPosCommands(s.LF.symbol, '\n', 'Line feed');
+export const CR = new EscPosCommands(s.CR.symbol, '\n', 'Print and carriage return');
 export const ESC_J_n = new EscPosCommands(s.ESC.symbol + Hex2Str( 0x4A) + rc.nPositions1, '', 'Print and Paper Feed n vertical');
 export const ESC_d_n = new EscPosCommands(s.ESC.symbol + Hex2Str( 0x64) + rc.nPositions1, '', 'Print and feed paper n lines');
-export const HT = new EscPosCommands(s.HT, '', 'Horizontal tab');
+export const HT = new EscPosCommands(s.HT.symbol, '', 'Horizontal tab');
 export const GS_FF = new EscPosCommands(s.GS.symbol + s.FF.symbol, '', 'Print and paper feed to the label gap');
 export const GS_x99 = new EscPosCommands(s.GS.symbol + Hex2Str( 0x99), '', 'Read the printer status');
 export const basicControlCommand = [ESC_AT, FF, SO, LF, CR, ESC_J_n, ESC_d_n, HT, GS_FF, GS_x99];
@@ -46,4 +46,6 @@ export const ESC_R_n = new EscPosCommands(s.ESC.symbol + Hex2Str(0x52) + rc.nPos
 export const US_f_id_nL_nH = new EscPosCommands(s.US.symbol + Hex2Str(0x66) + rc.nPositions3, '', 'In frame mode data transmission');
 export const US_q_id = new EscPosCommands(s.US.symbol + Hex2Str(0x71) + rc.nPositions1, '', 'Frame status query');
 export const chineseCharacterCommand = [FS_AMP, FS_DOT, FS_U_nL_nH, ESC_t_n, ESC_R_n, US_f_id_nL_nH, US_q_id];
+
+export const commandList = [].concat(basicControlCommand, printLayoutParameters, barCodePrintingCommand, chineseCharacterCommand)
 

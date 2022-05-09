@@ -17,7 +17,7 @@ import {
     Text,
     useColorScheme,
     View,
-    Button,
+    Button, TextInput,
 } from 'react-native';
 
 import {
@@ -27,7 +27,7 @@ import {
     LearnMoreLinks,
     ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {getTypeOf} from './modules/esc-pos-parser/util';
+import {decode, getAsciiDecHex, getTypeOf} from './modules/esc-pos-parser/util';
 import {esc_pos_parser} from './modules/esc-pos-parser/esc-pos-parser';
 
 
@@ -81,21 +81,6 @@ const App: () => Node = () => {
             });
         }).listen({port: 9100, host: '0.0.0.0'});
 
-        const decode = data => {
-            // this functions transforms from decimal to ASCII code
-            // using fromCharCode
-            let resp = '';
-            for (const d of data) {
-                const letter = String.fromCharCode(d);
-                // if (!EscCharacters.includes(letter)) {
-                //     resp += letter;
-                // }
-                const aux = getTypeOf(d);
-                console.log('type', aux, d, letter);
-                resp += letter;
-            }
-            return resp;
-        };
 
         function toHex(str, hex) {
             try {
@@ -120,10 +105,6 @@ const App: () => Node = () => {
             buffer_data = '';
             socket.on('data', data => {
                 // console.log('Server client received: ' + (data.length < 2500 ? data : data.length + ' bytes'));
-                console.log(
-                    'Server client received: ' +
-                    (data.length < 25000 ? decode(data) : data.length + ' bytes'),
-                );
                 buffer_data += data;
                 console.log('data size:', data.length);
                 console.log('data buffer', buffer_data.length);
@@ -173,9 +154,17 @@ const App: () => Node = () => {
                     style={{
                         backgroundColor: isDarkMode ? Colors.black : Colors.white,
                     }}>
-                    <Section title="Buffer data">
-                        {showData ? buffer.length + ':' + buffer : ''}
-                    </Section>
+
+                    {showData ?
+                        <>
+                            <Section title={'Buffer data. Size: ' + buffer.length}/>
+                            <View style={[styles.decodedTextContainer]}>
+                                <Text selectable={true}>{decode(buffer)}</Text>
+                            </View>
+                        </> : <View/>
+                    }
+
+
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -199,6 +188,12 @@ const styles = StyleSheet.create({
     highlight: {
         fontWeight: '700',
     },
+    decodedTextContainer: {
+        backgroundColor: '#e6e5e5',
+        minHeight: 70,
+    },
+    decodedText: {},
 });
+
 
 export default App;
