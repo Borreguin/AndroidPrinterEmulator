@@ -30,6 +30,7 @@ import {
 import {EscCharacters} from './modules/esc-pos-parser/symbols';
 import TextRegexButton from './component/test-regex-button';
 import {getTypeOf} from './modules/esc-pos-parser/util';
+import {ESC_EXCLAMATION_MARK_N} from './modules/esc-pos-parser/commandsAndres';
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -60,6 +61,7 @@ const Section = ({children, title}): Node => {
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [buffer, setBuffer] = useState('');
+  const [showData, setShowData] = useState(false);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -119,6 +121,8 @@ const App: () => Node = () => {
         'Server client received: ' +
           (data.length < 25000 ? decode(data) : data.length + ' bytes'),
       );
+      let data_info = buffer + data;
+      setBuffer(data_info);
     });
 
     socket.on('error', error => {
@@ -141,7 +145,7 @@ const App: () => Node = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <TextRegexButton />
+      <Button title='Show Data' onPress={() => { setShowData(true)}} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
@@ -150,11 +154,9 @@ const App: () => Node = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
+          <Section title="Buffer data">
+            {showData? buffer: ""}
           </Section>
-          {/* <Button title="Press me" onPress={newFunction} >*/}
         </View>
       </ScrollView>
     </SafeAreaView>
