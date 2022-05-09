@@ -9,8 +9,10 @@ const TextRegexButton = () => {
     return (
         <Button title='Press me' onPress={() => {
             const text = '!214464565';
-            const a = ESC_EXCLAMATION_MARK_N.command.test(text)
-            console.log(a, text)
+            const textMatchs = ESC_EXCLAMATION_MARK_N.command.test(text)
+            const replaceTextByRegex = text.replace(ESC_EXCLAMATION_MARK_N.command, "");
+
+            console.log(textMatchs, text, replaceTextByRegex)
         }} />
     )
 }
