@@ -6,180 +6,199 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import type {Node} from 'react';
 import TcpSocket from 'react-native-tcp-socket';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Button,
+    SafeAreaView,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    useColorScheme,
+    View,
+    Button,
 } from 'react-native';
 
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
+    Colors,
+    DebugInstructions,
+    Header,
+    LearnMoreLinks,
+    ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {EscCharacters} from './modules/esc-pos-parser/symbols';
-import TextRegexButton from './component/test-regex-button';
 import {getTypeOf} from './modules/esc-pos-parser/util';
-import {ESC_EXCLAMATION_MARK_N} from './modules/esc-pos-parser/commandsAndres';
+import {esc_pos_parser} from './modules/esc-pos-parser/esc-pos-parser';
+
 
 const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+    const isDarkMode = useColorScheme() === 'dark';
+    return (
+        <View style={styles.sectionContainer}>
+            <Text
+                style={[
+                    styles.sectionTitle,
+                    {
+                        color: isDarkMode ? Colors.white : Colors.black,
+                    },
+                ]}>
+                {title}
+            </Text>
+            <Text
+                style={[
+                    styles.sectionDescription,
+                    {
+                        color: isDarkMode ? Colors.light : Colors.dark,
+                    },
+                ]}>
+                {children}
+            </Text>
+        </View>
+    );
 };
 
 const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-  const [buffer, setBuffer] = useState('');
-  const [showData, setShowData] = useState(false);
+    const isDarkMode = useColorScheme() === 'dark';
+    const [buffer, setBuffer] = useState('');
+    const [showData, setShowData] = useState(false);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+    const backgroundStyle = {
+        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    };
 
-  const server = TcpSocket.createServer(function (socket) {
-    socket.on('data', data => {
-      socket.write('Echo server ' + data);
-    });
+    useEffect(() => {
+        const server = TcpSocket.createServer(function (socket) {
+            socket.on('data', data => {
+                socket.write('Echo server ' + data);
+            });
 
-    socket.on('error', error => {
-      console.log('An error ocurred with client socket ', error);
-    });
+            socket.on('error', error => {
+                console.log('An error ocurred with client socket ', error);
+            });
 
-    socket.on('close', error => {
-      console.log('Closed connection with ', socket.address());
-    });
-  }).listen({port: 9100, host: '0.0.0.0'});
+            socket.on('close', error => {
+                console.log('Closed connection with ', socket.address());
+            });
+        }).listen({port: 9100, host: '0.0.0.0'});
 
-  const decode = data => {
-    let resp = '';
-    for (const d of data) {
-      const aux = getTypeOf(d);
-      console.log("type", aux, d);
-      const letter = String.fromCharCode(d);
-      if (!EscCharacters.includes(letter)) {
-        resp += letter;
-      }
-    }
+        const decode = data => {
+            // this functions transforms from decimal to ASCII code
+            // using fromCharCode
+            let resp = '';
+            for (const d of data) {
+                const letter = String.fromCharCode(d);
+                // if (!EscCharacters.includes(letter)) {
+                //     resp += letter;
+                // }
+                const aux = getTypeOf(d);
+                console.log('type', aux, d, letter);
+                resp += letter;
+            }
+            return resp;
+        };
 
-    return resp;
-  };
+        function toHex(str, hex) {
+            try {
+                hex = unescape(encodeURIComponent(str))
+                    .split('')
+                    .map(function (v) {
+                        return v.charCodeAt(0).toString(16);
+                    })
+                    .join('');
+            } catch (e) {
+                hex = str;
+                console.log('invalid text input: ' + str);
+            }
+            return hex;
+        }
 
-  function toHex(str, hex) {
-    try {
-      hex = unescape(encodeURIComponent(str))
-        .split('')
-        .map(function (v) {
-          return v.charCodeAt(0).toString(16);
-        })
-        .join('');
-    } catch (e) {
-      hex = str;
-      console.log('invalid text input: ' + str);
-    }
-    return hex;
-  }
+        let buffer_data = '';
+        server.on('connection', socket => {
+            console.log(
+                'Client connected to server on ' + JSON.stringify(socket.address()),
+            );
+            buffer_data = '';
+            socket.on('data', data => {
+                // console.log('Server client received: ' + (data.length < 2500 ? data : data.length + ' bytes'));
+                console.log(
+                    'Server client received: ' +
+                    (data.length < 25000 ? decode(data) : data.length + ' bytes'),
+                );
+                buffer_data += data;
+                console.log('data size:', data.length);
+                console.log('data buffer', buffer_data.length);
+            });
 
-  server.on('connection', socket => {
-    console.log(
-      'Client connected to server on ' + JSON.stringify(socket.address()),
+            socket.on('error', error => {
+                console.log('Server client error on error' + error);
+            });
+
+            socket.on('close', error => {
+                console.log('Server client closed ' + (error ? error : ''));
+                setBuffer(buffer_data);
+            });
+        });
+
+        server.on('error', error => {
+            console.log('An error occurred with the server', error);
+        });
+
+        server.on('close', () => {
+            console.log('Server closed connection, finally');
+
+        });
+    }, []);
+
+
+    return (
+        <SafeAreaView style={backgroundStyle}>
+            <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}/>
+            <Button title="Show Data" onPress={() => {
+                setShowData(!showData);
+                console.log('collected data:\n', buffer);
+            }}/>
+            <Button title="Clean Data"
+                    onPress={() => {
+                        setBuffer('');
+                    }}/>
+            <Button title="Parse Data"
+                    onPress={() => {
+                        esc_pos_parser(buffer);
+                    }}/>
+            <ScrollView
+                contentInsetAdjustmentBehavior="automatic"
+                style={backgroundStyle}>
+                <Header/>
+                <View
+                    style={{
+                        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+                    }}>
+                    <Section title="Buffer data">
+                        {showData ? buffer.length + ':' + buffer : ''}
+                    </Section>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
-
-    socket.on('data', data => {
-      // console.log('Server client received: ' + (data.length < 2500 ? data : data.length + ' bytes'));
-      console.log(
-        'Server client received: ' +
-          (data.length < 25000 ? decode(data) : data.length + ' bytes'),
-      );
-      let data_info = buffer + data;
-      setBuffer(data_info);
-    });
-
-    socket.on('error', error => {
-      console.log('Server client error ' + error);
-    });
-
-    socket.on('close', error => {
-      console.log('Server client closed ' + (error ? error : ''));
-    });
-  });
-
-  server.on('error', error => {
-    console.log('An error ocurred with the server', error);
-  });
-
-  server.on('close', () => {
-    console.log('Server closed connection');
-  });
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Button title='Show Data' onPress={() => { setShowData(true)}} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Buffer data">
-            {showData? buffer: ""}
-          </Section>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+    sectionContainer: {
+        marginTop: 32,
+        paddingHorizontal: 24,
+    },
+    sectionTitle: {
+        fontSize: 24,
+        fontWeight: '600',
+    },
+    sectionDescription: {
+        marginTop: 8,
+        fontSize: 18,
+        fontWeight: '400',
+    },
+    highlight: {
+        fontWeight: '700',
+    },
 });
 
 export default App;

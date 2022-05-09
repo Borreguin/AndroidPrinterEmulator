@@ -3,7 +3,7 @@ export class EscPosCommands {
   description;
   replaceWith;
   constructor(command, replaceWith, description) {
-    this.command = new RegExp(command);
+    this.command = new RegExp(command, 'g');
     this.replaceWith = replaceWith;
     this.description = description;
   }
