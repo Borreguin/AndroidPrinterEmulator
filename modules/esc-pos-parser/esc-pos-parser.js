@@ -1,4 +1,4 @@
-import {basicControlCommand, commandList} from './commandsRober';
+import {basicControlCommand, commandList} from './commands-list';
 
 export const esc_pos_parser = (to_parse) =>{
     let resp = to_parse;

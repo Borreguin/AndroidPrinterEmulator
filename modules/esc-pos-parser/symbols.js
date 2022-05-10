@@ -30,6 +30,10 @@ export const DOL = new SpecialSymbol(0x24, '', '$');
 export const NULL = new SpecialSymbol(0xFF, '', 'FF');
 
 export const SP = new SpecialSymbol(0x20, ' ', 'Space');
+export const HYPHEN = new SpecialSymbol(0x2D, ' ', '-');
+export const ASTERISK = new SpecialSymbol(0x2A, ' ', '*' );
+export const SLASH = new SpecialSymbol(0x2F, ' ', '/' );
+export const MARK = new SpecialSymbol(0x20, ' ', '‘');
 
 export const AT = new SpecialSymbol(0x40, '', '@ at');
 
@@ -38,6 +42,14 @@ export const C_END = new SpecialSymbol(0x05, '', 'C_END');
 export const C_DC4 = new SpecialSymbol(0x14, '', 'C_DC4');
 
 export const EXCLAMATION_MARK_CLOSE = new SpecialSymbol(0x21, '', '!');
+
+export const B = new SpecialSymbol(0x42, '', 'B');
+export const E = new SpecialSymbol(0x45, '', 'E');
+export const M = new SpecialSymbol(0x4D, '', 'M');
+export const P = new SpecialSymbol(0x50, '', 'P');
+export const R = new SpecialSymbol(0x72, '', 'R');
+export const S = new SpecialSymbol(0x73, '', 'S');
+export const V = new SpecialSymbol(0x56, '', 'V');
 
 export const EscCharacters = [
   STX.symbol,

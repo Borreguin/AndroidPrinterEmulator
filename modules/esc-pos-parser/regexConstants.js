@@ -4,6 +4,7 @@ const NUMBER_0_TO_2 = '\\b(0|1|2){1}';
 const nPositions1 = '\\b(\\w){1}';
 const nPositions2 = '\\b(\\w){2}';
 const nPositions3 = '\\b(\\w){3}';
+const nPositions4 = '\\b(\\w){4}';
 const nPositions5 = '\\b(\\w){5}';
 
 export default {
@@ -12,5 +13,6 @@ export default {
     nPositions1,
     nPositions2,
     nPositions3,
+    nPositions4,
     nPositions5
 }
