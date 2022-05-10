@@ -13,4 +13,5 @@ export const esc_pos_parser = (to_parse) =>{
     }
     console.log("to_parse:", to_parse);
     console.log("resp:", resp);
+    return resp;
 }
