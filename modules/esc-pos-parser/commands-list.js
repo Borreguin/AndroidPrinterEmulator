@@ -38,8 +38,8 @@ export const GS_L_n = new EscPosCommands(s.GS.symbol + Hex2Str( 0x4C) + rc.nPosi
 export const printLayoutParameters = [ESC_DOL_nL_nH, ESC_D_nL_nk, ESC_2, ESC_3n, ESC_SP_n, ESC_a_n, GS_L_n];
 
 // Graphics / image print command 
-export const ESC_ASTERISK_m_nL_nH_dk = new EscPosCommands(s.ESC.symbol + s.ASTERISK.symbol + rc.nPositions4, '', 'Specify bit image mode');
-export const GS_ASTERISK_x_y_dk = new EscPosCommands(s.GS.symbol + s.ASTERISK.symbol + rc.nPositions3, '', 'Define download bit images');
+export const ESC_ASTERISK_m_nL_nH_dk = new EscPosCommands(s.ESC.symbol + "\\" + s.ASTERISK.symbol + rc.nPositions4, '', 'Specify bit image mode');
+export const GS_ASTERISK_x_y_dk = new EscPosCommands(s.GS.symbol + "\\" + s.ASTERISK.symbol + rc.nPositions3, '', 'Define download bit images');
 export const GS_SLASH_n = new EscPosCommands(s.GS.symbol + s.SLASH.symbol + rc.nPositions1, '', 'Print download bit images');
 export const FS_P_n = new EscPosCommands(s.FS.symbol + s.P.symbol + rc.nPositions1, '', 'Print NV bit image');
 export const graphicsPrintCommand = [ESC_ASTERISK_m_nL_nH_dk, GS_ASTERISK_x_y_dk, GS_SLASH_n, FS_P_n];
