@@ -8,7 +8,6 @@
 
 import React, {useEffect, useState} from 'react';
 import type {Node} from 'react';
-import TcpSocket from 'react-native-tcp-socket';
 import {
     SafeAreaView,
     ScrollView,
@@ -20,22 +19,10 @@ import {
     Button, TextInput,
 } from 'react-native';
 
-import {
-    Colors,
-    DebugInstructions,
-    Header,
-    LearnMoreLinks,
-    ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import {
-    createTCPSocketServer,
-    decode,
-    getAsciiDecHex,
-    getTypeOf, HexStr2Buffer,
-    onlyAsciiCharacters,
-    toHex, toShowInScreen,
-} from './modules/esc-pos-parser/util';
-import {esc_pos_parser} from './modules/esc-pos-parser/esc-pos-parser';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { HexStr2Buffer, onlyAsciiCharacters, toHex, toShowInScreen } from './app/shared/esc-pos-parser/util';
+import {esc_pos_parser} from './app/shared/esc-pos-parser/esc-pos-parser';
+import {createTCPSocketServer} from './app/shared/TCPSocketServer/TCPSocketServer';
 
 
 const Section = ({title}): Node => {

@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Button,
   } from 'react-native';
-import { ESC_EXCLAMATION_MARK_N } from '../modules/esc-pos-parser/commandsAndres';
+import { ESC_EXCLAMATION_MARK_N } from '../app/modules/esc-pos-parser/commandsAndres';
 
 const TextRegexButton = () => {
 
