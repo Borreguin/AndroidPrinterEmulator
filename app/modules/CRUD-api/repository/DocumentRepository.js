@@ -11,7 +11,7 @@ export const createDocumentRepo = (document: Document) => {
         if (!document) {
             msg.result = false;
             msg.message = 'Invalid Document input!';
-            resolve({ result: msg.result, message: msg.message });
+            resolve({result: msg.result, message: msg.message});
         }
 
         sqlite.transaction((tx) => {
@@ -21,16 +21,48 @@ export const createDocumentRepo = (document: Document) => {
                 (tx, results) => {
                     const success = results.rowsAffected > 0;
                     msg.result = success;
-                    msg.message = 'Create new Document' + (success? 'successfully!' : 'failed!')
-                    resolve({ result: msg.result, message: msg.message, id: results.insertId });
+                    msg.message = 'Create new Document ' + (success ? 'successfully!' : 'failed!');
+                    console.log(msg);
+                    resolve({result: msg.result, message: msg.message, id: results.insertId});
                 }, (error) => {
                     msg.result = false;
                     msg.message = `${error.message}`;
-                    resolve({ result: msg.result, message: msg.message });
+                    console.log(msg);
+                    resolve({result: msg.result, message: msg.message});
                 });
-        })
+        });
     });
-}
+};
+
+export const createDocumentTable = () => {
+
+    return new Promise((resolve, reject) => {
+        let msg = new Message();
+
+        const sqlTable = 'CREATE TABLE "document_registry" (' +
+            ' "id" INTEGER NOT NULL, ' +
+            ' "printed_date" TEXT, ' +
+            ' "raw_document" TEXT, ' +
+            ' "parsed_document" TEXT, ' +
+            ' PRIMARY KEY("id" AUTOINCREMENT) ' +
+            ');';
+        sqlite.transaction((tx) => {
+            tx.executeSql(
+                sqlTable,
+                [],
+                (tx, results) => {
+                    const success = results.rowsAffected > 0;
+                    msg.result = success;
+                    msg.message = 'Create new Document Table ' + (success ? 'successfully!' : 'failed!');
+                    resolve({result: msg.result, message: msg.message, id: results.insertId});
+                }, (error) => {
+                    msg.result = false;
+                    msg.message = `${error.message}`;
+                    resolve({result: msg.result, message: msg.message});
+                });
+        });
+    });
+};
 
 export const getAllDocumentsRepo = () => {
     return new Promise((resolve, reject) => {
@@ -40,19 +72,19 @@ export const getAllDocumentsRepo = () => {
             tx.executeSql('SELECT * FROM document_registry', [], (tx, results) => {
                 for (let i = 0; i < results.rows.length; i++) {
                     let item = results.rows.item(i);
-                    let documents = new Document(item.id, item.printedDate, item.rawDocument, item.parsedDocument);
+                    let documents = new Document(item.id, new Date(item.printedDate), item.rawDocument, item.parsedDocument);
                     msg.result.push(documents);
                 }
                 msg.message = 'Get all Documents successfully!';
-                resolve({ result: msg.result, message: msg.message });
+                resolve({result: msg.result, message: msg.message});
             }, (error) => {
                 msg.result = [];
                 msg.message = `${error.message}`;
-                resolve({ result: msg.result, message: msg.message });
+                resolve({result: msg.result, message: msg.message});
             });
-        })
+        });
     });
-}
+};
 
 export const getDocumentByIdRepo = (id: number) => {
 
@@ -68,15 +100,15 @@ export const getDocumentByIdRepo = (id: number) => {
                     msg.result = null;
                     msg.message = `Not found Analytics Event with id=${id}`;
                 }
-                resolve({ result: msg.result, message: msg.message });
+                resolve({result: msg.result, message: msg.message});
             }, (error) => {
                 msg.result = null;
                 msg.message = `${error.message}`;
-                resolve({ result: msg.result, message: msg.message });
+                resolve({result: msg.result, message: msg.message});
             });
-        })
+        });
     });
-}
+};
 
 export const deleteDocumentRepo = (document: Document) => {
     return new Promise((resolve, reject) => {
@@ -84,7 +116,7 @@ export const deleteDocumentRepo = (document: Document) => {
         if (!document) {
             msg.result = false;
             msg.message = 'Invalid document input!';
-            resolve({ result: msg.result, message: msg.message });
+            resolve({result: msg.result, message: msg.message});
         }
 
         sqlite.transaction((tx) => {
@@ -93,14 +125,14 @@ export const deleteDocumentRepo = (document: Document) => {
                 (tx, results) => {
                     const success = results.rowsAffected > 0;
                     msg.result = success;
-                    msg.message = success? `Delete Analytics Event with id=${document.id} successfully!` :
+                    msg.message = success ? `Delete Analytics Event with id=${document.id} successfully!` :
                         `Not found Analytics Event with id=${document.id}`;
-                    resolve({ result: msg.result, message: msg.message });
+                    resolve({result: msg.result, message: msg.message});
                 }, (error) => {
                     msg.result = false;
                     msg.message = `${error.message}`;
-                    resolve({ result: msg.result, message: msg.message });
+                    resolve({result: msg.result, message: msg.message});
                 });
-        })
+        });
     });
-}
+};

@@ -9,5 +9,5 @@ export const registerDocumentEvent = async (document: string) => {
         rawDocument: document,
         parsedDocument: onlyAsciiCharacters(esc_pos_parser(document))
     }
-    await createDocument(toSave);
+    return await createDocument(toSave);
 }
