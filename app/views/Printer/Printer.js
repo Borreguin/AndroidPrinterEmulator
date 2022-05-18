@@ -10,56 +10,55 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {HexStr2Buffer, onlyAsciiCharacters, toHex, toShowInScreen} from '../../shared/esc-pos-parser/util';
+import {
+    Hex2Str,
+    HexStr2Buffer,
+    notPrintableAsciiCharacters,
+    onlyAsciiCharacters,
+    toHex,
+    toShowInScreen,
+} from '../../shared/esc-pos-parser/util';
 import {createTCPSocketServer} from '../../shared/TCPSocketServer/TCPSocketServer';
 import {Section} from '../../components/Section/Section';
-import {styles} from './DevTool.style';
+import {styles} from './Printer.style';
 import {registerDocumentEvent} from '../../shared/services/register-document.service';
 import {createDocumentTable} from '../../modules/CRUD-api/repository/DocumentRepository';
 import {esc_pos_parser} from '../../shared/esc-pos-parser/esc-pos-parser';
 
 
-export const DevTool = ({buffer, setBuffer}) => {
+export const Printer = ({buffer, setBuffer}) => {
     const isDarkMode = useColorScheme() === 'dark';
-    const [hexData, setHexData] = useState('');
-    const [textHexData, setTextHexData] = useState('');
-    const [showBufferData, setShowBufferData] = useState(false);
-    const [showParseData, setShowParseData] = useState(false);
-    const [showHexData, setShowHexData] = useState(false);
+    const [showBufferData, setShowBufferData] = useState(true);
+    const [showParseData, setShowParseData] = useState(true);
     const [message, setMessage] = useState('');
+    const [rawData, setRawData] = useState('');
+    const [cleanData, setCleanData] = useState('');
 
     const backgroundStyle = {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     };
 
-
-
     useEffect(() => {
-        const hex = toHex(buffer);
-        setTextHexData(hex);
-        setHexData(hex);
+        setRawData(buffer.toString().replace(notPrintableAsciiCharacters, Hex2Str(0xA4)));
+        setCleanData(esc_pos_parser(buffer));
     }, [buffer]);
 
     return (
         <SafeAreaView style={backgroundStyle}>
             <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}/>
-            <Button title="Show Buffer Data" onPress={() => {
+            <Button title={showBufferData? "Hide Printed Data" : "Show Printed Data"}
+                    onPress={() => {
                 setShowBufferData(!showBufferData);
             }}/>
-            <Button title="Show Hex Data" onPress={() => {
-                setShowHexData(!showHexData);
-            }}/>
-            <Button title="Parse Data" onPress={() => {
+            <Button title={showParseData? "Hide Cleaned Data" : "Show Cleaned Data"}
+                    onPress={() => {
                 setShowParseData(!showParseData);
+            }}/>
+            <Button title="Save Data" onPress={() => {
+                registerDocumentEvent(buffer.toString()).then((resp) => setMessage(resp.message));
             }}/>
             <Button title="Clean Data" onPress={() => {
                 setBuffer('');
-            }}/>
-            <Button title="create table" onPress={() => {
-                createDocumentTable().then((resp) => setMessage(resp.message));
-            }}/>
-            <Button title="insert" onPress={() => {
-                registerDocumentEvent('Check me now').then((resp) => setMessage(resp.message));
             }}/>
             <ScrollView
                 contentInsetAdjustmentBehavior="automatic"
@@ -71,41 +70,26 @@ export const DevTool = ({buffer, setBuffer}) => {
 
                     {showBufferData ?
                         <>
-                            <Section title={'Buffer data. Size: ' + buffer.length}/>
+                            <Section title={'Raw data. Size: ' + rawData.length}/>
                             <View style={[styles.TextSection]}>
                                 <Text
                                     style={[styles.customText]}
-                                    selectable={true}>{toShowInScreen(buffer, 100)}</Text>
+                                    selectable={true}>{rawData}</Text>
                             </View>
                         </> : <View/>
                     }
 
                     {showParseData ?
                         <>
-                            <Section title={'Parse data. Size: ' + buffer.length}/>
+                            <Section title={'Clean data. Size: ' + cleanData.length}/>
                             <View style={[styles.TextSection]}>
                                 <Text
                                     style={[styles.customText]}
-                                    selectable={true}>{onlyAsciiCharacters(esc_pos_parser(buffer))}</Text>
+                                    selectable={true}>{cleanData}</Text>
                             </View>
                         </> : <View/>
                     }
 
-                    {showHexData ?
-                        <>
-                            <Section title={'Hex Data. Size: ' + buffer.length}/>
-                            <View style={[styles.TextSection]}>
-                                <TextInput
-                                    style={[styles.customText]}
-                                    multiline={true}
-                                    numberOfLines={7}
-                                    value={textHexData}
-                                    onChangeText={setTextHexData}
-                                />
-                                <Button title="Set Buffer" onPress={() => setBuffer(HexStr2Buffer(textHexData))}/>
-                            </View>
-                        </> : <View/>
-                    }
                     <Text style={[styles.customText]}>{message}</Text>
 
                 </View>

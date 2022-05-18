@@ -86,7 +86,7 @@ export const toShowInScreen = (bufferData: string, nPerLine: number) => {
     const remainder = hexData.length % nPerLine;
     const nRows = remainder > 0 ? Math.floor(hexData.length/nPerLine) + 1 : Math.floor(hexData.length/nPerLine);
     let resp = "";
-    console.log(asciiStrWSpace, hexData);
+    // console.log(asciiStrWSpace, hexData);
     for(let row = 0; row < nRows; row++){
         let ini = row * nPerLine;
         let end = Math.min( (row + 1) * nPerLine - 2, hexData.length);
@@ -106,7 +106,7 @@ export function toHex(str, hex) {
             .join('');
     } catch (e) {
         hex = str;
-        console.log('invalid text input: ' + str);
+        // console.log('invalid text input: ' + str);
     }
     return hex;
 }

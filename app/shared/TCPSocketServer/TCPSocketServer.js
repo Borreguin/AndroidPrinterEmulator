@@ -15,7 +15,7 @@ export const createTCPSocketServer = (setBuffer) =>{
         socket.on('close', error => {
             console.log('Closed connection with ', socket.address());
         });
-    }).listen({port: TCP_SOCKET.PORT, host: TCP_SOCKET.PORT});
+    }).listen({port: TCP_SOCKET.PORT, host: TCP_SOCKET.HOST});
 
     let buffer_data = '';
     server.on('connection', socket => {
@@ -26,8 +26,8 @@ export const createTCPSocketServer = (setBuffer) =>{
         socket.on('data', data => {
             // console.log('Server client received: ' + (data.length < 2500 ? data : data.length + ' bytes'));
             buffer_data += data;
-            console.log('data size:', data.length);
-            console.log('data buffer', buffer_data.length);
+            // console.log('data size:', data.length);
+            // console.log('data buffer', buffer_data.length);
         });
 
         socket.on('error', error => {

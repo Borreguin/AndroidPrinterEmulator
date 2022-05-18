@@ -12,7 +12,7 @@ const TextRegexButton = () => {
             const textMatchs = ESC_EXCLAMATION_MARK_N.command.test(text)
             const replaceTextByRegex = text.replace(ESC_EXCLAMATION_MARK_N.command, "");
 
-            console.log(textMatchs, text, replaceTextByRegex)
+            // console.log(textMatchs, text, replaceTextByRegex)
         }} />
     )
 }

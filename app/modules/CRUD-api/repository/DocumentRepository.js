@@ -1,4 +1,5 @@
 import Message from '../models/Message';
+import Document from '../models/Document';
 
 const {getConnection} = require('./DBConfig');
 
@@ -13,21 +14,18 @@ export const createDocumentRepo = (document: Document) => {
             msg.message = 'Invalid Document input!';
             resolve({result: msg.result, message: msg.message});
         }
-
         sqlite.transaction((tx) => {
             tx.executeSql(
-                'INSERT INTO document_registry(printed_date, raw_document, parsed_document) VALUES (?,?,?)',
-                [document.printedDate, document.rawDocument, document.parsedDocument],
+                'INSERT INTO document_registry(printed_date, raw_document, parsed_document, hex_document) VALUES (?,?,?,?)',
+                [document.printedDate, document.rawDocument, document.parsedDocument, document.hexDocument],
                 (tx, results) => {
                     const success = results.rowsAffected > 0;
                     msg.result = success;
                     msg.message = 'Create new Document ' + (success ? 'successfully!' : 'failed!');
-                    console.log(msg);
                     resolve({result: msg.result, message: msg.message, id: results.insertId});
                 }, (error) => {
                     msg.result = false;
                     msg.message = `${error.message}`;
-                    console.log(msg);
                     resolve({result: msg.result, message: msg.message});
                 });
         });
@@ -44,6 +42,7 @@ export const createDocumentTable = () => {
             ' "printed_date" TEXT, ' +
             ' "raw_document" TEXT, ' +
             ' "parsed_document" TEXT, ' +
+            ' "hex_document" TEXT, ' +
             ' PRIMARY KEY("id" AUTOINCREMENT) ' +
             ');';
         sqlite.transaction((tx) => {
@@ -72,8 +71,9 @@ export const getAllDocumentsRepo = () => {
             tx.executeSql('SELECT * FROM document_registry', [], (tx, results) => {
                 for (let i = 0; i < results.rows.length; i++) {
                     let item = results.rows.item(i);
-                    let documents = new Document(item.id, new Date(item.printedDate), item.rawDocument, item.parsedDocument);
-                    msg.result.push(documents);
+                    let document = new Document(item.id, new Date(item.printed_date), item.raw_document,
+                        item.parsed_document, item.hex_document);
+                    msg.result.push(document);
                 }
                 msg.message = 'Get all Documents successfully!';
                 resolve({result: msg.result, message: msg.message});
@@ -84,6 +84,7 @@ export const getAllDocumentsRepo = () => {
             });
         });
     });
+
 };
 
 export const getDocumentByIdRepo = (id: number) => {

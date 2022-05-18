@@ -10,8 +10,8 @@ export const createDocumentService = (document: Document) => {
     return createDocumentRepo(document);
 }
 
-export const getAllDocumentService = () => {
-    return getAllDocumentsRepo();
+export const getAllDocumentService = async () => {
+    return await getAllDocumentsRepo();
 }
 
 export const getDocumentByIdService = (id: number) => {
