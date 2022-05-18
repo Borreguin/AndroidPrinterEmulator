@@ -6,7 +6,7 @@ import {
     Text,
     useColorScheme,
     View,
-    Button, TextInput,
+    Button, TextInput, TouchableOpacity,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -33,9 +33,11 @@ export const Printer = ({buffer, setBuffer}) => {
     const [message, setMessage] = useState('');
     const [rawData, setRawData] = useState('');
     const [cleanData, setCleanData] = useState('');
+    const [hideButtons, setHideButtons] = useState(false);
 
     const backgroundStyle = {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+        height: '80%'
     };
 
     useEffect(() => {
@@ -46,22 +48,27 @@ export const Printer = ({buffer, setBuffer}) => {
     return (
         <SafeAreaView style={backgroundStyle}>
             <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}/>
-            <Button title={showBufferData? "Hide Printed Data" : "Show Printed Data"}
-                    onPress={() => {
-                setShowBufferData(!showBufferData);
-            }}/>
-            <Button title={showParseData? "Hide Cleaned Data" : "Show Cleaned Data"}
-                    onPress={() => {
-                setShowParseData(!showParseData);
-            }}/>
-            <Button title="Save Data" onPress={() => {
-                registerDocumentEvent(buffer.toString()).then((resp) => setMessage(resp.message));
-            }}/>
-            <Button title="Clean Data" onPress={() => {
-                setBuffer('');
-            }}/>
+            <View style={hideButtons? styles.hide : ''}>
+                <Button title={showBufferData ? 'Hide Printed Data' : 'Show Printed Data'}
+                        onPress={() => {
+                            setShowBufferData(!showBufferData);
+                        }}/>
+                <Button title={showParseData ? 'Hide Cleaned Data' : 'Show Cleaned Data'}
+                        onPress={() => {
+                            setShowParseData(!showParseData);
+                        }}/>
+                <Button title="Save Data" onPress={() => {
+                    registerDocumentEvent(buffer.toString()).then((resp) => setMessage(resp.message));
+                }}/>
+                <Button title="Clean Data" onPress={() => {
+                    setBuffer('');
+                }}/>
+            </View>
+            <TouchableOpacity style={[styles.hideButtons]} onPress={() => setHideButtons(!hideButtons)}>
+                <Text>...</Text>
+            </TouchableOpacity>
             <ScrollView
-                contentInsetAdjustmentBehavior="automatic"
+                contentContainerStyle={{ flexGrow: 1 }}
                 style={backgroundStyle}>
                 <View
                     style={{
