@@ -77,7 +77,7 @@ export const getAsciiWithSpace = (value) => {
 }
 
 export const toShowInScreen = (bufferData: string, nPerLine: number) => {
-    let newBufferData = replaceCRWith(bufferData, "  ");
+    let newBufferData = replaceCRWith(bufferData, " ");
     let asciiStrWSpace = '';
     for(let dt of newBufferData){
         asciiStrWSpace += getAsciiWithSpace(dt);
@@ -86,11 +86,14 @@ export const toShowInScreen = (bufferData: string, nPerLine: number) => {
     const remainder = hexData.length % nPerLine;
     const nRows = remainder > 0 ? Math.floor(hexData.length/nPerLine) + 1 : Math.floor(hexData.length/nPerLine);
     let resp = "";
-    // console.log(asciiStrWSpace, hexData);
+    // console.log("check out", asciiStrWSpace.length, hexData.length);
+    let ini = 0;
     for(let row = 0; row < nRows; row++){
-        let ini = row * nPerLine;
-        let end = Math.min( (row + 1) * nPerLine - 2, hexData.length);
-        resp += hexData.substr(ini, end) + "\n" + asciiStrWSpace.substr(ini, end);
+        let end = Math.min( ini + nPerLine, hexData.length);
+        // console.log(hexData.substring(ini, end));
+        resp += hexData.substring(ini, end) + "\n" + asciiStrWSpace.substring(ini, end) + "\n \n";
+        ini += nPerLine;
+        // console.log(resp.length);
     }
     return resp;
 }

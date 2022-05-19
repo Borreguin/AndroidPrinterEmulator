@@ -15,10 +15,10 @@ const App: () => Node = () => {
     useEffect(() => {
         // console.log("start tcp socket...")
         const TcpSocketServer = createTCPSocketServer(setBuffer);
-        // return () => {
-        //     // Anything in here is fired on component unmount.
-        //     TcpSocketServer.close();
-        // }
+        return () => {
+            // Anything in here is fired on component unmount.
+            TcpSocketServer.close();
+        }
     }, []);
 
     const renderThisComponent = (componentName) => {

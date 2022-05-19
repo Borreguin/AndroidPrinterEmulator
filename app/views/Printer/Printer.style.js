@@ -25,5 +25,12 @@ export const styles = StyleSheet.create({
         fontVariant: ['tabular-nums'],
         fontFamily: 'monospace'
     },
-
+    hideButtons:{
+        height:30,
+        alignItems: 'center',
+        backgroundColor: 'rgba(124,125,124,0.77)'
+    },
+    hide:{
+        display: 'none'
+    }
 });

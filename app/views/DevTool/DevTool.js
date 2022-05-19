@@ -6,7 +6,7 @@ import {
     Text,
     useColorScheme,
     View,
-    Button, TextInput,
+    Button, TextInput, TouchableOpacity,
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -28,9 +28,11 @@ export const DevTool = ({ buffer, setBuffer }) => {
     const [showParseData, setShowParseData] = useState(false);
     const [showHexData, setShowHexData] = useState(false);
     const [message, setMessage] = useState('');
+    const [hideButtons, setHideButtons] = useState(false);
 
     const backgroundStyle = {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+        height: '80%'
     };
 
     useEffect(() => {
@@ -54,31 +56,34 @@ export const DevTool = ({ buffer, setBuffer }) => {
 
     return (
         <SafeAreaView style={backgroundStyle}>
-            <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-            <Button title="Show Buffer Data" onPress={() => {
-                setShowBufferData(!showBufferData);
-            }} />
-            <Button title="Show Hex Data" onPress={() => {
-                setShowHexData(!showHexData);
-            }} />
-            <Button title="Parse Data" onPress={() => {
-                setShowParseData(!showParseData);
-            }} />
-            <Button title="Clean Data" onPress={() => {
-                setBuffer('');
-            }} />
-            <Button title="create table" onPress={() => {
-                createDocumentTable().then((resp) => setMessage(resp.message));
-            }} />
-            <Button title="insert" onPress={() => {
-                registerDocumentEvent('Check me now').then((resp) => setMessage(resp.message));
-            }} />
-            <Button title="Get CSV" onPress={() => {
-                getAllDocumentsEvent().then((resp) => {
-                    getCSV(jsonToCSV(resp.result));
-                });
-            }} />
-
+            <View style={hideButtons ? styles.hide : ''}>
+                <Button title="Show Buffer Data" onPress={() => {
+                    setShowBufferData(!showBufferData);
+                }} />
+                <Button title="Show Hex Data" onPress={() => {
+                    setShowHexData(!showHexData);
+                }} />
+                <Button title="Parse Data" onPress={() => {
+                    setShowParseData(!showParseData);
+                }} />
+                <Button title="Clean Data" onPress={() => {
+                    setBuffer('');
+                }} />
+                <Button title="create table" onPress={() => {
+                    createDocumentTable().then((resp) => setMessage(resp.message));
+                }} />
+                <Button title="insert" onPress={() => {
+                    registerDocumentEvent('Check me now').then((resp) => setMessage(resp.message));
+                }} />
+                <Button title="Get CSV" onPress={() => {
+                    getAllDocumentsEvent().then((resp) => {
+                        getCSV(jsonToCSV(resp.result));
+                    });
+                }} />
+            </View>
+            <TouchableOpacity style={[styles.hideButtons]} onPress={() => setHideButtons(!hideButtons)}>
+                <Text>...</Text>
+            </TouchableOpacity>
             <ScrollView
                 contentInsetAdjustmentBehavior="automatic"
                 style={backgroundStyle}>
