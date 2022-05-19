@@ -45,7 +45,6 @@ export const DevTool = ({ buffer, setBuffer }) => {
         const today = new Date().toISOString().replace(/[:]/g, "_");
         const pathToWrite = `${RNFetchBlob.fs.dirs.DownloadDir}/printerEmulator-${today}.csv`;
 
-        console.log(pathToWrite)
         RNFetchBlob.fs
             .writeFile(pathToWrite, jsonData, 'utf8')
             .then(() => {
