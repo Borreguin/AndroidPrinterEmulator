@@ -1,4 +1,4 @@
-import {createDocument, deleteDocument} from '../../modules/CRUD-api/controllers/DocumentController';
+import {createDocument, deleteDocument, getAllDocuments} from '../../modules/CRUD-api/controllers/DocumentController';
 import {onlyAsciiCharacters} from '../esc-pos-parser/util';
 import {esc_pos_parser} from '../esc-pos-parser/esc-pos-parser';
 import Document from '../../modules/CRUD-api/models/Document';
@@ -11,4 +11,8 @@ export const registerDocumentEvent = async (document: string) => {
 
 export const deleteDocumentEvent = async (document: Document) => {
     return await deleteDocument(document);
+}
+
+export const getAllDocumentsEvent = async () => {
+    return await getAllDocuments();
 }

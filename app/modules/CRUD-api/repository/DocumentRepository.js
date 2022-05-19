@@ -52,7 +52,7 @@ export const createDocumentTable = () => {
                 (tx, results) => {
                     const success = results.rowsAffected > 0;
                     msg.result = success;
-                    msg.message = 'Create new Document Table ' + (success ? 'successfully!' : 'failed!');
+                    msg.message = 'Create new Document Table successfully!';
                     resolve({result: msg.result, message: msg.message, id: results.insertId});
                 }, (error) => {
                     msg.result = false;
